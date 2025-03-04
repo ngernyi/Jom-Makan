@@ -12,11 +12,22 @@ import 'package:good_food/features/setting_module/setting_main_page.dart';
 import 'package:provider/provider.dart';
 import 'features/free_food_module/provider/addFreeFoodProvider.dart';
 import 'features/auth_modul/provider/auth_provider.dart';
-
+import 'service/firebase_options.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
+  if (kIsWeb) {
+    // Initialize Firebase for Web with manual config
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.web, // Use Web config
+    );
+  } else {
+    // For Android & iOS, Firebase auto-detects google-services.json
+    await Firebase.initializeApp();
+  }
+
   runApp(
     MultiProvider(
       providers: [
